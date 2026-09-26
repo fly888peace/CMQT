@@ -15,20 +15,30 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # 源文件：复刻约定——只列已存在的文件，写完一个补一个
 SOURCES += \
     AppStyle/AppStyle.cpp \
+    CameraFactory/CameraFactory.cpp \
+    CameraFactory/HikCamera.cpp \
+    CameraFactory/VirtualCamera.cpp \
+    CameraInterface/CameraContext.cpp \
     CameraInterface/CameraImageQueue.cpp \
     Listener.cpp \
+    ParseUiJson/ParseUiJson.cpp \
     main.cpp \
     mainwindow.cpp
 
 # 头文件：同上（源工程这里的 CMCamraMetaInfo.h 是拼写错误，复刻时修正）
 HEADERS += \
     AppStyle/AppStyle.h \
+    CameraFactory/CameraFactory.h \
+    CameraFactory/HikCamera.h \
+    CameraFactory/VirtualCamera.h \
+    CameraInterface/CameraContext.h \
     CameraInterface/CameraError.h \
     CameraInterface/CMCameraMetaInfo.h \
     CameraInterface/CMCameraParam.h \
     CameraInterface/CameraImageQueue.h \
     CameraInterface/CameraInterface.h \
     Listener.h \
+    ParseUiJson/ParseUiJson.h \
     Utils/ImageConver.h \
     mainwindow.h
 
