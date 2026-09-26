@@ -14,6 +14,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 # 源文件：复刻约定——只列已存在的文件，写完一个补一个
 SOURCES += \
+    Listener.cpp \
     main.cpp \
     mainwindow.cpp
 
