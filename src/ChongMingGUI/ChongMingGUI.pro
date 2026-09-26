@@ -27,6 +27,7 @@ HEADERS += \
     CameraInterface/CMCameraMetaInfo.h \
     CameraInterface/CMCameraParam.h \
     CameraInterface/CameraImageQueue.h \
+    CameraInterface/CameraInterface.h \
     Listener.h \
     Utils/ImageConver.h \
     mainwindow.h
