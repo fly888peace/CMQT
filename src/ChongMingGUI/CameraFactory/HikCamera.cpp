@@ -3,6 +3,7 @@
 #include <QDebug>
 
 const QString HikCamera::HIK_CAMERA_VENDER = "Hikrobot";
+const QString HikCamera::HIK_CAMERA_VENDER_LEGACY = "Hikvision";
 
 // 判断像素格式是否为彩色
 bool IsColor(MvGvspPixelType enType)

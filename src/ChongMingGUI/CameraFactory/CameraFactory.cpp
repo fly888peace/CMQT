@@ -18,6 +18,9 @@ CameraFactory* CameraFactory::instance()
             // 源工程叫 VIRTUAL_CAMERA_VENDER，读这里会误以为注册错了对象
             CameraFactory::instance()->registerCamera<HikCamera>(
                 HikCamera::HIK_CAMERA_VENDER);
+            // 老固件别名（实测 MV-CA060-11GM 上报 "Hikvision"）
+            CameraFactory::instance()->registerCamera<HikCamera>(
+                HikCamera::HIK_CAMERA_VENDER_LEGACY);
             CameraFactory::instance()->registerCamera<VirtualCamera>(
                 VirtualCamera::VIRTUAL_CAMERA_VENDER);
         }

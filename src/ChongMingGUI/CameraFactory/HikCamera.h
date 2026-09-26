@@ -20,6 +20,9 @@ class HikCamera
     : public CameraInterface {
 public:
     static const QString HIK_CAMERA_VENDER;
+    // 老固件型号（如 MV-CA060 系列）上报的厂商名是 "Hikvision" 而非 "Hikrobot"，
+    // 工厂需为两个名字都注册创建器，否则老相机枚举出来却创建失败
+    static const QString HIK_CAMERA_VENDER_LEGACY;
     HikCamera(const CameraMetaInfo& info);
     ~HikCamera();
     // 枚举相机
