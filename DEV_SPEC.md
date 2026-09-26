@@ -374,8 +374,8 @@ ViewWidget::on_Grabbing_Button_toggled
 |------|------|--------|------|
 | **A** 工程骨架与构建基座 | 先能编译、能跑出空窗口 | 4 | ✅ 已完成 |
 | **B** 前端地基：观察者 + 样式 + 图像转换 | 建立全局通信、样式系统与工具函数 | 4 | ✅ 已完成 |
-| **C** 相机抽象层 | 接口/队列/上下文/错误码/参数抽象 | 6 | ⬜ 待开始 |
-| **D** 相机实现层 | JSON 解析 + 虚拟相机 + 海康封装 + 工厂 | 5 | ⬜ 待开始 |
+| **C** 相机抽象层 | 接口/队列/上下文/错误码/参数抽象 | 6 | ✅ 已完成 |
+| **D** 相机实现层 | JSON 解析 + 虚拟相机 + 海康封装 + 工厂 | 5 | ✅ 已完成 |
 | **E** 界面层 | 参数树 + 视觉窗口 + 控制条 + 主窗口组装 | 7 | ⬜ 待开始 |
 | **F** 端到端联调 | VirtualCamera 全流程 + 真相机实测 | 3 | ⬜ 待开始 |
 
@@ -405,24 +405,24 @@ ViewWidget::on_Grabbing_Button_toggled
 
 > 验收标准：主窗口套用 chongming.qss 全局样式；`main.cpp` 里 `qDebug` 一条消息能被广播链路接收。
 
-#### 阶段 C：相机抽象层
+#### 阶段 C：相机抽象层 ✅
 
-- [ ] **C1** `CameraError.h` —— 16 个错误码宏 + `getErrorInfoEn()`（**加 `inline` 或拆 .cpp**，修源工程 ODR 隐患）
-- [ ] **C2** `CMCameraMetaInfo.h` + `CMCameraParam.h` —— 元信息三元组与 6 类型参数值包装
-- [ ] **C3** `CameraImageQueue` —— 双队列 + mutex/CV + 满丢最旧帧 + Take 超时（**修复源工程超时返回成功码、Mat 覆写两个隐患**）
-- [ ] **C4** `CameraInterface.h` —— 17 个纯虚函数 + `ImageQueue()`/`UserName()`/`Serial()` 默认实现
-- [ ] **C5** `CameraContext` —— 单例 + `m_serialCamMap` 路由 + 全部接口转发 + `CHECK_RETURN` 宏
-- [ ] **C6** 抽象层自测：写一个栈上假实现类跑通 `CameraContext` 路由（临时代码，测完即删）
+- [x] **C1** `CameraError.h` —— 16 个错误码宏 + `getErrorInfoEn()`（已改 `inline`；复刻新增 `CAMERA_QUEUE_STOPPED`）
+- [x] **C2** `CMCameraMetaInfo.h` + `CMCameraParam.h` —— 元信息三元组与 6 类型参数值包装（只读函数补 `const`）
+- [x] **C3** `CameraImageQueue` —— 双队列 + mutex/CV（已修：超时返回 `GETIAMGE_TIMEOUT`、Put copyTo/Take clone 防覆写、补 `Stop/Restart`）
+- [x] **C4** `CameraInterface.h` —— 17 个纯虚函数 + `ImageQueue()`/`UserName()`/`Serial()` 默认实现
+- [x] **C5** `CameraContext` —— 单例 + `m_serialCamMap` 路由（已修：相机对象泄漏、startGrabbing/destroyStream 返回值吞没）
+- [x] **C6** 抽象层自测：临时 main 跑通路由（枚举→连接→37 参数→拉流→取 512×512 图→停流→断连，全部 ret=0，测完已恢复）
 
 > 验收标准：抽象层独立编译通过；自测 main 能对假相机完成 Enumeration→connect→getParamList 调用序列。
 
-#### 阶段 D：相机实现层
+#### 阶段 D：相机实现层 ✅
 
-- [ ] **D1** `ParseUiJson` —— 单例解析 `:/VirtualCameraParam.json` → `QList<CameraParamMetaInfo>`（group/params 二级结构）
-- [ ] **D2** `VirtualCamera` —— 固定 1 台假相机、出图线程（**修复 detached 线程隐患：改为可 join 的成员线程 + 原子停止标志**）、假参数读写
-- [ ] **D3** `HikCamera` 前半 —— 枚举（GigE/USB 双分支）、acquire/release、connect/disconnect（**修复 USB 相机取错序列号隐患**）
-- [ ] **D4** `HikCamera` 后半 —— creatStream/destroyStream（回调注册）、拉流启停、6 类型参数读写、`MV_CC_FeatureLoad/Save` 配置
-- [ ] **D5** `CameraFactory` —— 单例 + 注册表，`HikCamera`→"Hikrobot"、`VirtualCamera`→"Virtual"
+- [x] **D1** `ParseUiJson` —— 单例解析 `:/VirtualCameraParam.json` → `QList<CameraParamMetaInfo>`（37 项实测通过）
+- [x] **D2** `VirtualCamera` —— 固定 1 台假相机（已修：成员线程+join、atomic 标志、队列 Stop/Restart 联动、聚合初始化顺序）
+- [x] **D3** `HikCamera` 前半 —— 枚举 GigE/USB 双分支、acquire 按设备类型取序列号（已修 USB 匹配）
+- [x] **D4** `HikCamera` 后半 —— 回调注册、拉流启停、6 类型参数读写（已修：Mat 自持转换缓冲消泄漏、判空补齐、READ_PARAM_FAILED 笔误）
+- [x] **D5** `CameraFactory` —— 单例 + 注册表（常量改名 `HIK_CAMERA_VENDER`）；`CameraContext.cpp` 同步纳入构建
 
 > 验收标准：临时 main 调 `CameraFactory::instance()->createCamera` 能建出两种相机；VirtualCamera 枚举/连接/拉流出随机图；有真相机时 HikCamera 枚举出真实序列号。
 
