@@ -22,6 +22,9 @@ SOURCES += \
 # 头文件：同上（源工程这里的 CMCamraMetaInfo.h 是拼写错误，复刻时修正）
 HEADERS += \
     AppStyle/AppStyle.h \
+    CameraInterface/CameraError.h \
+    CameraInterface/CMCameraMetaInfo.h \
+    CameraInterface/CMCameraParam.h \
     Listener.h \
     Utils/ImageConver.h \
     mainwindow.h
