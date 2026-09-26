@@ -373,7 +373,7 @@ ViewWidget::on_Grabbing_Button_toggled
 | 阶段 | 目的 | 步骤数 | 状态 |
 |------|------|--------|------|
 | **A** 工程骨架与构建基座 | 先能编译、能跑出空窗口 | 4 | ✅ 已完成 |
-| **B** 前端地基：观察者 + 样式 + 图像转换 | 建立全局通信、样式系统与工具函数 | 4 | ⬜ 待开始 |
+| **B** 前端地基：观察者 + 样式 + 图像转换 | 建立全局通信、样式系统与工具函数 | 4 | ✅ 已完成 |
 | **C** 相机抽象层 | 接口/队列/上下文/错误码/参数抽象 | 6 | ⬜ 待开始 |
 | **D** 相机实现层 | JSON 解析 + 虚拟相机 + 海康封装 + 工厂 | 5 | ⬜ 待开始 |
 | **E** 界面层 | 参数树 + 视觉窗口 + 控制条 + 主窗口组装 | 7 | ⬜ 待开始 |
@@ -396,12 +396,12 @@ ViewWidget::on_Grabbing_Button_toggled
 
 > 验收标准：Qt Creator 配好 MSVC Kit 后 `Ctrl+B` 成功，运行出现空白主窗口（带 favicon 图标）。
 
-#### 阶段 B：前端地基：观察者 + 样式 + 图像转换
+#### 阶段 B：前端地基：观察者 + 样式 + 图像转换 ✅
 
-- [ ] **B1** `Listener.h` —— `MESSAGE` 枚举 6 个 2 的幂位值 + `Listener` 抽象基类
-- [ ] **B2** `Listener.cpp` —— `ListenerManger` 单例、`registerMessage()` 位拆包注册（注意补上源工程漏掉的 `CAMERA_CAMERASWICH` 分支）、`notify()` 广播
-- [ ] **B3** `AppStyle` —— Fusion + QPalette + 读 `:/chongming.qss` 全局装载，`MainWindow` 接入
-- [ ] **B4** `Utils/ImageConver.h` —— `cvMat2QImage` / `QImage2cvMat`（8UC1/8UC3/8UC4 三分支）
+- [x] **B1** `Listener.h` —— `MESSAGE` 枚举 6 个 2 的幂位值 + `Listener` 抽象基类
+- [x] **B2** `Listener.cpp` —— `ListenerManger` 单例（改 Meyers 实现修泄漏）、`registerMessage()` 位拆包注册（已补 `CAMERA_CAMERASWICH` 分支 + 注册去重）、`notify()` 广播
+- [x] **B3** `AppStyle` —— Fusion + QPalette + 读 `:/chongming.qss` 全局装载，`MainWindow` 接入
+- [x] **B4** `Utils/ImageConver.h` —— `cvMat2QImage` / `QImage2cvMat`（8UC1/8UC3/8UC4 三分支，`static`→`inline`，去热路径日志）
 
 > 验收标准：主窗口套用 chongming.qss 全局样式；`main.cpp` 里 `qDebug` 一条消息能被广播链路接收。
 
