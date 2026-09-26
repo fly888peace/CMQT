@@ -29,6 +29,16 @@ ParamWidget::ParamWidget(ControlWidget* controlWidget, QWidget* parent)
     m_pModel = new CameraParamModel(headerList);
     m_pParamTreeView->setModel(m_pModel);
     m_pParamTreeView->setItemDelegate(m_pCameraParamDelegate);
+
+    // 表头列宽配置（复刻增补，源工程未设置）：
+    // - Interactive：Param/Value 之间的分隔条可拖拽（参数名长了手动拉宽）
+    // - StretchLastSection：Value 列自动吃掉剩余宽度
+    // - Param 列初始给 200，装不下的长名靠拖拽或省略号提示
+    m_pParamTreeView->header()->setSectionResizeMode(QHeaderView::Interactive);
+    m_pParamTreeView->header()->setStretchLastSection(true);
+    m_pParamTreeView->header()->setMinimumSectionSize(60);
+    m_pParamTreeView->header()->resizeSection(CameraParamModel::ColType::NAME, 200);
+
     m_pParamTreeView->expandAll();
     m_pSelectionModel = m_pParamTreeView->selectionModel();
 
