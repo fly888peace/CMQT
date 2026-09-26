@@ -19,6 +19,7 @@ SOURCES += \
 
 # 头文件：同上（源工程这里的 CMCamraMetaInfo.h 是拼写错误，复刻时修正）
 HEADERS += \
+    Listener.h \
     mainwindow.h
 
 # 界面ui文件
