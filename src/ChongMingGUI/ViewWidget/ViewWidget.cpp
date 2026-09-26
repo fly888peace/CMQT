@@ -21,6 +21,8 @@ ViewWidget::ViewWidget(ControlWidget* controlWidget, QWidget* parent)
 
     // 创建信号槽
     connect(m_pImageProcess, &AcquireImageProcess::sigUpdateImage, m_pViewBox, &GraphicsView::SetImage);
+    // 取图线程的报错（如连续超时）转发给 MainWindow
+    connect(m_pImageProcess, &AcquireImageProcess::sigErrorInfo, this, &ViewWidget::SigUpdateErrorInfo);
 
     // 注册事件监听
     ListenerManger::Instance()->registerMessage(MESSAGE::CAMERA_CONNECT

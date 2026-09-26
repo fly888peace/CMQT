@@ -242,6 +242,13 @@ bool HikCamera::isGrabbing()
 
 uint32_t HikCamera::acquire()
 {
+    // 复刻修正：重连场景（上次断连异常未走 release）旧句柄可能还在，
+    // 先销毁再重建，避免句柄泄漏与状态错乱
+    if (m_cameraHandle != NULL) {
+        MV_CC_DestroyHandle(m_cameraHandle);
+        m_cameraHandle = NULL;
+    }
+
     // 枚举设备，找到和当前相机序列号对应的相机信息
     MV_CC_DEVICE_INFO_LIST stDeviceList;
     memset(&stDeviceList, 0, sizeof(MV_CC_DEVICE_INFO_LIST));

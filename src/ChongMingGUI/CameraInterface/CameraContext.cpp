@@ -147,13 +147,14 @@ uint32_t CameraContext::disconnect(const QString serial)
     auto camera = m_serialCamMap[serial];
     // 断连相机
     auto ret = camera->disconnect();
-    if (ret != CHONGMING_OK)
-        return ret;
 
-    // 解初始化
-    ret = camera->release();
+    // 复刻修正：断连失败也必须 release（拔网线后 disconnect 大概率报错，
+    // 源工程此时提前返回不释放句柄，残留的旧句柄导致重连必败）
+    auto releaseRet = camera->release();
     if (ret != CHONGMING_OK)
         return ret;
+    if (releaseRet != CHONGMING_OK)
+        return releaseRet;
 
     return CHONGMING_OK;
 }

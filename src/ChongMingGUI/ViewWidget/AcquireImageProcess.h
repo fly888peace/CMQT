@@ -31,6 +31,8 @@ public:
 
 signals:
     void sigUpdateImage(const QImage& iamge);
+    // 连续取图超时报错（如拉流中拔网线），由 ViewWidget 转发给 MainWindow 弹窗
+    void sigErrorInfo(QString info);
 
 protected:
     void run() override;
