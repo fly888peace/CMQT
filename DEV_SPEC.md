@@ -376,7 +376,7 @@ ViewWidget::on_Grabbing_Button_toggled
 | **B** 前端地基：观察者 + 样式 + 图像转换 | 建立全局通信、样式系统与工具函数 | 4 | ✅ 已完成 |
 | **C** 相机抽象层 | 接口/队列/上下文/错误码/参数抽象 | 6 | ✅ 已完成 |
 | **D** 相机实现层 | JSON 解析 + 虚拟相机 + 海康封装 + 工厂 | 5 | ✅ 已完成 |
-| **E** 界面层 | 参数树 + 视觉窗口 + 控制条 + 主窗口组装 | 7 | ⬜ 待开始 |
+| **E** 界面层 | 参数树 + 视觉窗口 + 控制条 + 主窗口组装 | 7 | ✅ 已完成 |
 | **F** 端到端联调 | VirtualCamera 全流程 + 真相机实测 | 3 | ⬜ 待开始 |
 
 > 总步数 29。每一步都可在 30~90 分钟内完成并单独验证——**做完一步就构建一次**，
@@ -426,15 +426,15 @@ ViewWidget::on_Grabbing_Button_toggled
 
 > 验收标准：临时 main 调 `CameraFactory::instance()->createCamera` 能建出两种相机；VirtualCamera 枚举/连接/拉流出随机图；有真相机时 HikCamera 枚举出真实序列号。
 
-#### 阶段 E：界面层
+#### 阶段 E：界面层 ✅
 
-- [ ] **E1** `ControlWidget` —— .ui + 4 按钮 + 相机列表 + 配置导入导出（QFileDialog + `configFormat` 过滤）
-- [ ] **E2** `CameraParamModel/Item/Delegate` —— 二级树 Model、角色定义、按类型 createEditor、自绘网格线
-- [ ] **E3** 6 种 CustomWidget —— Int/Double/Enum/Bool/Cmd/String（**修复源工程 Bool 控件双 bug、Enum 用索引当值两个隐患**）
-- [ ] **E4** `ParamWidget` —— .ui + 树 + 描述框 + 读写串联（**修复空选择崩溃隐患**）
-- [ ] **E5** `GraphicsView` + `ImageItem` —— 缩放/双击居中/棋盘格/悬停 RGB
-- [ ] **E6** `ViewWidget` + `AcquireImageProcess` —— 拉流按钮 + 取图线程（**修复线程永不退出隐患：加退出标志 + 队列唤醒**）
-- [ ] **E7** `MainWindow` + `LoadingDialog` —— 三子界面组装、错误弹窗、`AppStyle::Polish()`
+- [x] **E1** `ControlWidget` —— .ui + 4 按钮 + 相机列表 + 配置导入导出（已补发 `CAMERA_CAMERASWICH` 事件）
+- [x] **E2** `CameraParamModel/Item/Delegate` —— 二级树 Model、角色定义、按类型 createEditor、自绘网格线（已修 clear 的 resetModel 契约）
+- [x] **E3** 6 种 CustomWidget —— Int/Double/Enum/Bool/Cmd/String（已修：Bool 双 bug、Enum 索引当值、Int64 钳制、值变立即回写）
+- [x] **E4** `ParamWidget` —— .ui + 树 + 描述框 + 读写串联（已修空选择崩溃）
+- [x] **E5** `GraphicsView` + `ImageItem` —— 缩放/双击居中/棋盘格/悬停 RGB（已修析构双重所有权、取色越界）
+- [x] **E6** `ViewWidget` + `AcquireImageProcess` —— 拉流按钮 + 取图线程（已修：原子停止标志 + requestStop/wait + 队列唤醒退出）
+- [x] **E7** `MainWindow` + `LoadingDialog` —— 三子界面组装、错误弹窗、`AppStyle::Polish()`（已去 QtConcurrent 残留）
 
 > 验收标准：完整界面出现；VirtualCamera 全链路（枚举→连接→参数树加载→拉流出图→改参→断连）在 UI 上跑通。
 
