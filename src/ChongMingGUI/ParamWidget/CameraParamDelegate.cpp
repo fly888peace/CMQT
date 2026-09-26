@@ -1,0 +1,140 @@
+#include "CameraParamDelegate.h"
+#include "CameraParamModel.h"
+#include "CustomWidget/BoolCustomWidget.h"
+#include "CustomWidget/CmdCustomWidget.h"
+#include "CustomWidget/DoubleCustomWidget.h"
+#include "CustomWidget/EnumCustomWidget.h"
+#include "CustomWidget/IntCustomWidget.h"
+#include "CustomWidget/StringCustomWidget.h"
+#include "OneCustomWidget.h"
+
+CameraParamDelegate::CameraParamDelegate(QObject* parent)
+    : QStyledItemDelegate(parent)
+{
+}
+
+CameraParamDelegate::~CameraParamDelegate()
+{
+}
+
+// 根据传入的QModelIndex来决定创建何种编辑器
+QWidget* CameraParamDelegate::createEditor(QWidget* parent, const QStyleOptionViewItem& option, const QModelIndex& index) const
+{
+    Q_UNUSED(option)
+
+    auto createWidget = [](CameraParam& cameraParam, const QModelIndex& index, QWidget* parent) -> OneCustomWidget* {
+        switch (cameraParam.type()) {
+        case STRING:
+            return new StringCustomWidget(cameraParam, index, parent);
+        case CMD:
+            return new CmdCustomWidget(cameraParam, index, parent);
+        case INT:
+            return new IntCustomWidget(cameraParam, index, parent);
+        case DOUBLE:
+            return new DoubleCustomWidget(cameraParam, index, parent);
+        case BOOL:
+            return new BoolCustomWidget(cameraParam, index, parent);
+        case ENUM:
+            return new EnumCustomWidget(cameraParam, index, parent);
+        default:
+            return nullptr;
+        }
+    };
+
+    if (index.column() == CameraParamModel::ColType::VALUE) {
+        // 只为第2列数据列做特殊处理
+        const QVariant varParam = index.data(CameraParamModel::ParamRole);
+        CameraParam cameraParam = varParam.value<CameraParam>();
+
+        auto* oneCustomWidget = createWidget(cameraParam, index, parent);
+        if (oneCustomWidget) {
+            oneCustomWidget->InitWidget();
+            connect(oneCustomWidget, &OneCustomWidget::sigValueChanged, this,
+                &CameraParamDelegate::onValueChanged, Qt::UniqueConnection);
+        }
+        return oneCustomWidget;
+    }
+    return nullptr;
+}
+
+// 通过传入的QModelIndex来设置页面的值
+void CameraParamDelegate::setEditorData(QWidget* editor, const QModelIndex& index) const
+{
+    // 只为第2列数据列做特殊处理
+    if (index.column() == CameraParamModel::ColType::VALUE) {
+        OneCustomWidget* pCustomEdit = qobject_cast<OneCustomWidget*>(editor);
+
+        const QVariant varParam = index.data(CameraParamModel::ParamRole);
+        CameraParam cameraParam = varParam.value<CameraParam>();
+
+        pCustomEdit->setParam(cameraParam);
+    }
+}
+
+// 通过界面的传值设置model模型里的值
+void CameraParamDelegate::setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& index) const
+{
+    // 只为第2列数据列做特殊处理
+    if (index.column() == CameraParamModel::ColType::VALUE) {
+        OneCustomWidget* pCustomEdit = qobject_cast<OneCustomWidget*>(editor);
+        CameraParam cameraParam = pCustomEdit->getParam();
+        model->setData(index, QVariant::fromValue(cameraParam), CameraParamModel::ParamRole);
+    }
+}
+
+void CameraParamDelegate::updateEditorGeometry(QWidget* editor, const QStyleOptionViewItem& option, const QModelIndex& index) const
+{
+    Q_UNUSED(index)
+    editor->setGeometry(option.rect);
+}
+
+void CameraParamDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option,
+    const QModelIndex& index) const
+{
+    painter->save();
+
+    // 1. 绘制选中背景
+    if (option.state & QStyle::State_Selected) {
+        painter->fillRect(option.rect, option.palette.highlight());
+    }
+
+    // 2. 绘制文本内容（不需要缩进处理）
+    QString text = index.data().toString();
+    painter->drawText(option.rect, Qt::AlignLeft | Qt::AlignVCenter, text);
+
+    // 3. 绘制网格线
+    QPen pen(QColor(220, 220, 220), 1, Qt::SolidLine);
+    painter->setPen(pen);
+
+    // 绘制右边框（列分割线）
+    painter->drawLine(option.rect.topRight(), option.rect.bottomRight());
+
+    // 绘制下边框（行分割线）
+    painter->drawLine(option.rect.bottomLeft(), option.rect.bottomRight());
+
+    painter->restore();
+}
+
+QSize CameraParamDelegate::sizeHint(const QStyleOptionViewItem& option,
+    const QModelIndex& index) const
+{
+    QSize size = QStyledItemDelegate::sizeHint(option, index);
+
+    // 增加高度，保持宽度不变
+    size.setHeight(20);
+    return size;
+}
+
+void CameraParamDelegate::onValueChanged(const CameraParam& param, const QModelIndex& index)
+{
+    OneCustomWidget* pCustomEdit = qobject_cast<OneCustomWidget*>(sender());
+    if (pCustomEdit) {
+        if (index.isValid()) {
+            // 更新Model数据
+            QAbstractItemModel* model = const_cast<QAbstractItemModel*>(index.model());
+            if (model) {
+                model->setData(index, QVariant::fromValue(param), CameraParamModel::ParamRole);
+            }
+        }
+    }
+}
