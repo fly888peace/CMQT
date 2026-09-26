@@ -20,7 +20,9 @@ SOURCES += \
     CameraFactory/VirtualCamera.cpp \
     CameraInterface/CameraContext.cpp \
     CameraInterface/CameraImageQueue.cpp \
+    ControlWidget/ControlWidget.cpp \
     Listener.cpp \
+    LoadingDialog/LoadingDialog.cpp \
     ParseUiJson/ParseUiJson.cpp \
     main.cpp \
     mainwindow.cpp
@@ -37,13 +39,17 @@ HEADERS += \
     CameraInterface/CMCameraParam.h \
     CameraInterface/CameraImageQueue.h \
     CameraInterface/CameraInterface.h \
+    ControlWidget/ControlWidget.h \
     Listener.h \
+    LoadingDialog/LoadingDialog.h \
     ParseUiJson/ParseUiJson.h \
     Utils/ImageConver.h \
     mainwindow.h
 
 # 界面ui文件
 FORMS += \
+    ControlWidget/ControlWidget.ui \
+    LoadingDialog/LoadingDialog.ui \
     mainwindow.ui
 
 # Default rules for deployment.
