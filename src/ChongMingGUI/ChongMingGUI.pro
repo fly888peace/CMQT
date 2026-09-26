@@ -23,6 +23,7 @@ SOURCES += \
 HEADERS += \
     AppStyle/AppStyle.h \
     Listener.h \
+    Utils/ImageConver.h \
     mainwindow.h
 
 # 界面ui文件
