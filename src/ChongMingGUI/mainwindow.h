@@ -5,10 +5,11 @@
  * 主界面仅需要做子界面的加载和布局即可，功能实现都集成在子界面中。
  * 所以主界面MainWindow基本没有什么代码。
  *
- * 阶段 A：仅骨架（.ui 三占位 + 状态栏错误标签）。
- * 子界面 ControlWidget / ParamWidget / ViewWidget 在阶段 E 接入。
  **************************************************/
 
+#include "ControlWidget/ControlWidget.h"
+#include "ParamWidget/ParamWidget.h"
+#include "ViewWidget/ViewWidget.h"
 #include <QLabel>
 #include <QMainWindow>
 
@@ -30,6 +31,9 @@ public slots:
 
 private:
     Ui::MainWindow* ui;
+    ControlWidget* m_pControlWidget; // 控制窗口
+    ParamWidget* m_pParamWidget; // 参数窗口
+    ViewWidget* m_pViewWidget; // 图像预览窗口
     QLabel* m_pErrorInfoLabel; // 错误信息显示
 };
 #endif // MAINWINDOW_H

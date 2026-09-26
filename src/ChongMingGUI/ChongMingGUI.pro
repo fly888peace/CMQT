@@ -23,7 +23,22 @@ SOURCES += \
     ControlWidget/ControlWidget.cpp \
     Listener.cpp \
     LoadingDialog/LoadingDialog.cpp \
+    ParamWidget/CameraParamDelegate.cpp \
+    ParamWidget/CameraParamItem.cpp \
+    ParamWidget/CameraParamModel.cpp \
+    ParamWidget/CustomWidget/BoolCustomWidget.cpp \
+    ParamWidget/CustomWidget/CmdCustomWidget.cpp \
+    ParamWidget/CustomWidget/DoubleCustomWidget.cpp \
+    ParamWidget/CustomWidget/EnumCustomWidget.cpp \
+    ParamWidget/CustomWidget/IntCustomWidget.cpp \
+    ParamWidget/CustomWidget/StringCustomWidget.cpp \
+    ParamWidget/OneCustomWidget.cpp \
+    ParamWidget/ParamWidget.cpp \
     ParseUiJson/ParseUiJson.cpp \
+    ViewWidget/AcquireImageProcess.cpp \
+    ViewWidget/GraphicsView.cpp \
+    ViewWidget/ImageItem.cpp \
+    ViewWidget/ViewWidget.cpp \
     main.cpp \
     mainwindow.cpp
 
@@ -42,14 +57,31 @@ HEADERS += \
     ControlWidget/ControlWidget.h \
     Listener.h \
     LoadingDialog/LoadingDialog.h \
+    ParamWidget/CameraParamDelegate.h \
+    ParamWidget/CameraParamItem.h \
+    ParamWidget/CameraParamModel.h \
+    ParamWidget/CustomWidget/BoolCustomWidget.h \
+    ParamWidget/CustomWidget/CmdCustomWidget.h \
+    ParamWidget/CustomWidget/DoubleCustomWidget.h \
+    ParamWidget/CustomWidget/EnumCustomWidget.h \
+    ParamWidget/CustomWidget/IntCustomWidget.h \
+    ParamWidget/CustomWidget/StringCustomWidget.h \
+    ParamWidget/OneCustomWidget.h \
+    ParamWidget/ParamWidget.h \
     ParseUiJson/ParseUiJson.h \
     Utils/ImageConver.h \
+    ViewWidget/AcquireImageProcess.h \
+    ViewWidget/GraphicsView.h \
+    ViewWidget/ImageItem.h \
+    ViewWidget/ViewWidget.h \
     mainwindow.h
 
 # 界面ui文件
 FORMS += \
     ControlWidget/ControlWidget.ui \
     LoadingDialog/LoadingDialog.ui \
+    ParamWidget/ParamWidget.ui \
+    ViewWidget/ViewWidget.ui \
     mainwindow.ui
 
 # Default rules for deployment.
