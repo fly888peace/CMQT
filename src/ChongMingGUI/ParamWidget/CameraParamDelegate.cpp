@@ -93,13 +93,23 @@ void CameraParamDelegate::paint(QPainter* painter, const QStyleOptionViewItem& o
 {
     painter->save();
 
-    // 1. 绘制选中背景
+    const bool enabled = option.state & QStyle::State_Enabled;
+
+    // 1. 绘制选中背景（复刻修正：半透明高亮替代不透明填充——
+    // 源工程禁用态下 palette.highlight 是不透明深色，拉流时整格变黑框盖住文字，
+    // 用户看不到自己之前选的是哪个参数）
     if (option.state & QStyle::State_Selected) {
-        painter->fillRect(option.rect, option.palette.highlight());
+        QColor hlColor = option.palette.highlight().color();
+        hlColor.setAlpha(enabled ? 90 : 45); // 正常态 35% 透明，禁用态再淡一点
+        painter->fillRect(option.rect, hlColor);
     }
 
-    // 2. 绘制文本内容（不需要缩进处理）
+    // 2. 绘制文本内容（不需要缩进处理；颜色按可用/禁用状态取，保证选中底上可读）
     QString text = index.data().toString();
+    QColor textColor = enabled
+        ? option.palette.color(QPalette::Active, QPalette::Text)
+        : option.palette.color(QPalette::Disabled, QPalette::Text);
+    painter->setPen(textColor);
     painter->drawText(option.rect, Qt::AlignLeft | Qt::AlignVCenter, text);
 
     // 3. 绘制网格线
