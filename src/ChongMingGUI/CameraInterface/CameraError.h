@@ -30,6 +30,7 @@ namespace CAMERAERROR {
 #define CAMERA_CONFIG_LOAD_FAILED 0x000D // 相机配置文件导入失败
 #define GETIAMGE_TIMEOUT 0x000E // 采图超时
 #define DEVICE_NOT_ACCESSIBLE 0x000F // 设备被占用不可达
+#define CAMERA_QUEUE_STOPPED 0x0010 // 图像队列被外部停止（复刻新增：配合 CameraImageQueue::Stop 唤醒 Take）
 }
 
 inline QString getErrorInfoEn(unsigned int error)
@@ -98,6 +99,10 @@ inline QString getErrorInfoEn(unsigned int error)
     }
     case DEVICE_NOT_ACCESSIBLE: {
         info = "The device is  UnAccessible";
+        break;
+    }
+    case CAMERA_QUEUE_STOPPED: {
+        info = "Image Queue Stopped";
         break;
     }
     default: {

@@ -15,6 +15,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # 源文件：复刻约定——只列已存在的文件，写完一个补一个
 SOURCES += \
     AppStyle/AppStyle.cpp \
+    CameraInterface/CameraImageQueue.cpp \
     Listener.cpp \
     main.cpp \
     mainwindow.cpp
@@ -25,6 +26,7 @@ HEADERS += \
     CameraInterface/CameraError.h \
     CameraInterface/CMCameraMetaInfo.h \
     CameraInterface/CMCameraParam.h \
+    CameraInterface/CameraImageQueue.h \
     Listener.h \
     Utils/ImageConver.h \
     mainwindow.h
