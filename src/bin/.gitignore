@@ -1,0 +1,36 @@
+# src/bin —— 编译产物与运行资源集中目录（.pro 里 DESTDIR 指向这里）
+
+# 编译中间文件
+*.pdb
+*.ilk
+*.exp
+*.tlog
+
+# 前端可执行文件（每次编译都会重新生成，不入库）
+/ChongMingGUI.exe
+
+# OpenCV 运行时 DLL（本地依赖，单个 60~125 MB，不入库）
+# 需要时从 D:\QT6\opencv-4.6.0\opencv\build\x64\vc15\bin 拷到本目录即可：
+#   Debug   用 opencv_world460d.dll
+#   Release 用 opencv_world460.dll
+/opencv_world*.dll
+
+# 海康相机运行时 DLL（优先用 MVS 安装器注册的系统运行环境；若运行缺 DLL，
+# 从 C:\Program Files (x86)\Common Files\MVS\Runtime\Win64_x64\ 拷入本目录）
+/MvCameraControl.dll
+/MvProducerGEV*.dll
+/MvProducerU3V*.dll
+
+# windeployqt 部署的 Qt6 运行时与插件（本地依赖，不入库）
+# 需要时运行：windeployqt --debug（或 --release）src/bin/ChongMingGUI.exe
+/Qt6*.dll
+/opengl32sw.dll
+/D3Dcompiler_47.dll
+/generic/
+/iconengines/
+/imageformats/
+/networkinformation/
+/platforms/
+/styles/
+/tls/
+/translations/
