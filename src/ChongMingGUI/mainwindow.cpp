@@ -1,4 +1,5 @@
 #include "mainwindow.h"
+#include "AppStyle/AppStyle.h"
 #include "ui_mainwindow.h"
 #include <QMessageBox>
 
@@ -17,7 +18,8 @@ MainWindow::MainWindow(QWidget* parent)
     // 设置标题和图标
     setWindowTitle(QStringLiteral("重明项目-工业相机二次开发-www.roundvision.cc"));
     setWindowIcon(QIcon(":/favicon.ico"));
-    // 阶段 B 接入 AppStyle::Polish() 全局样式
+    // 设置调色板与全局 QSS 样式
+    AppStyle::Polish();
 }
 
 MainWindow::~MainWindow()

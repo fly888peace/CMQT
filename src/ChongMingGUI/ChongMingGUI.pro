@@ -14,12 +14,14 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 # 源文件：复刻约定——只列已存在的文件，写完一个补一个
 SOURCES += \
+    AppStyle/AppStyle.cpp \
     Listener.cpp \
     main.cpp \
     mainwindow.cpp
 
 # 头文件：同上（源工程这里的 CMCamraMetaInfo.h 是拼写错误，复刻时修正）
 HEADERS += \
+    AppStyle/AppStyle.h \
     Listener.h \
     mainwindow.h
 
